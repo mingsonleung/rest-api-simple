@@ -10,3 +10,18 @@ export async function GET() {
 
   return NextResponse.json(todos);
 }
+
+export async function DELETE(request: Request) {
+  const { id }: Partial<Todo> = await request.json();
+
+  if (!id) {
+    return NextResponse.json({ message: "Todo id required" });
+  }
+
+  await fetch(`${DATA_SOURCE_URL}/${id}`, {
+    method: "DELETE",
+    headers: { "Content-Type": "application/json", "API-Key": API_KEY },
+  });
+
+  return NextResponse.json({ message: `Todo ${id} deleted` });
+}
